@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState } from 'react'
+
 import styled from "styled-components";
 import CardBuy from "./components/CardBuy.jsx";
+import CookieProvider from "./hooks/CookieProvider.jsx";
 
-import cursor from "../public/cursor.png"
-import robot from "../public/robot.png"
-import muscle from "../public/armmuscle.png"
+import cursor from "./assets/cursor.png";
+import robot from "./assets/robot.png";
+import muscle from "./assets/armmuscle.png";
+import cookie from "./assets/cookie2.png";
 
 const Container = styled.div`
   background-color: #4f4c4c;
@@ -32,6 +35,7 @@ const Right = styled.div`
 const ModelGame = styled.img`
   width: 200px;
   height: 200px;
+  max-width: 100%;
   border-radius: 500%;
   cursor: pointer;
   margin-top: 3rem;
@@ -56,7 +60,7 @@ const ModelGame = styled.img`
 const ContCookies = styled.h2`
   font-size: 2.5rem;
   font-weight: 800;
-  margin-top: 5rem;
+  margin-top: 3rem;
   margin-block-end: 0;
 `;
 
@@ -81,21 +85,21 @@ const MoreCookie = styled.h2`
   }
 `;
 const Shoph1 = styled.h1`
-text-align: center;
-font-size: 2.5rem;
-font-weight: 800;
-font-style: italic;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-style: italic;
+  margin-top: 1em;
+  margin-bottom: 1em;
 `;
 
 const ContainerShop = styled.div`
-  width: 90%;
+  width: 100%;
 `;
 
 function App() {
-  const [contCookie, setCookie] = useState(0);
-  const [contPerSecond, setPerSecond] = useState(0.0);
-  const [isClicked, setClicked] = useState(false);
-
+  const {contCookie, setCookie, contPerSecond, isClicked, setClicked} = CookieProvider()
+  
   function handleClick() {
     setCookie(contCookie + 1);
     if (isClicked == true) {
@@ -106,46 +110,51 @@ function App() {
   }
 
   return (
-    <Container>
-      <Left>
-        <div>
-          <ContCookies>
-            {contCookie == 1 ? `${contCookie} cookie` : `${contCookie} cookies`}
-          </ContCookies>
-          <PerSecond>Por Segundo: {contPerSecond}</PerSecond>
-        </div>
-        <ModelGame
-          draggable="false"
-          src="cookie2.png"
-          alt="cookie"
-          onClick={() => handleClick()}
-        ></ModelGame>
-        {isClicked == true ? <MoreCookie>+1 Cookie</MoreCookie> : ""}
-      </Left>
-      <Right>
-        <ContainerShop>
-          <Shoph1>Loja</Shoph1>
-          <CardBuy
-          img={cursor}
-          name="Cursor" 
-          description="Clicks automatico a cada 10 segundos"
-          shopvalue="15"
-          />
-          <CardBuy 
-          img={robot}
-          name="Robo" 
-          description="Clicks automatico a cada 10 segundos"
-          shopvalue="100"
-          />
-          <CardBuy 
-          img={muscle}
-          name="muscle" 
-          description="Clicks automatico a cada 10 segundos"
-          shopvalue="1,100"
-          />
-        </ContainerShop>
-      </Right>
-    </Container>
+      <Container>
+        <Left>
+          <div>
+            <ContCookies>
+              {contCookie == 1
+                ? `${contCookie} cookie`
+                : `${contCookie} cookies`}
+            </ContCookies>
+            <PerSecond>Por Segundo: {contPerSecond}</PerSecond>
+          </div>
+          <ModelGame
+            draggable="false"
+            src={cookie}
+            alt="cookie"
+            onClick={() => handleClick()}
+          ></ModelGame>
+          {isClicked == true ? <MoreCookie>+1 Cookie</MoreCookie> : ""}
+        </Left>
+        <Right>
+          <ContainerShop>
+            <Shoph1>Loja</Shoph1>
+            <CardBuy
+              cookiesValue={contCookie}
+              img={cursor}
+              name="Cursor"
+              shopvalue="15"
+              descriptionTolltip="Clicks automatico a cada 10 segundos"
+            />
+            <CardBuy
+              cookiesValue={contCookie}
+              img={robot}
+              name="Robot"
+              shopvalue="100"
+              descriptionTolltip="Cada robo produz 1 cookie por segundo"
+            />
+            <CardBuy
+              cookiesValue={contCookie}
+              img={muscle}
+              name="Muscle"
+              shopvalue="1100"
+              descriptionTolltip="Cada musculo produz 8 cookies por segundo"
+            />
+          </ContainerShop>
+        </Right>
+      </Container>
   );
 }
 
