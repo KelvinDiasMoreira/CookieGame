@@ -44,36 +44,37 @@ margin: 1em 1em 1em 1em;
 grid-area: value;
 text-align: center;
 font-size: 1.5em;
-color: #db0202;
+color: ${(prop) => prop.valueCookieForChangeColor >= prop.shopValueForChangeColor ? "green" : "#db0202"}
 `;
 
 export default function CardBuy({img, name, shopvalue, cookiesValue}){
 
-    const {setCookie} = useContext(CookieContext);
-
+    const {setCookie, setPerSecond, contPerSecond, dispatch} = useContext(CookieContext);
+    
 
     function buyShopContents(){
         if (name == "Muscle" &&  cookiesValue >= shopvalue) {
-            console.log("oi1")
             setCookie(cookiesValue - shopvalue );
+            dispatch({ type: "IncrementMuscle" })
+            dispatch({ type: "Muscle" })
         }
         if(name == "Robot" && cookiesValue >= shopvalue){
-            console.log("oi2")
             setCookie(cookiesValue - shopvalue);
+            dispatch({ type: "IncrementRobot" })
+            dispatch({ type: "Robot" })
         } 
         if(name == "Cursor" && cookiesValue >= shopvalue){
-            console.log("oi3")
             setCookie(cookiesValue - shopvalue);
+            dispatch({ type: "IncrementCursor" })
+            dispatch({ type: "Cursor" })
         }
-        else{
-            console.log(cookiesValue)
-        }
+        
       }
     return (
         <Container onClick={() => buyShopContents()}>
             <ContainerImg src={img}></ContainerImg>
             <Title>{name}</Title>
-            <ShopValue>{shopvalue}</ShopValue>
+            <ShopValue valueCookieForChangeColor={cookiesValue} shopValueForChangeColor={shopvalue}>{shopvalue}</ShopValue>
         </Container>
     )
 } 

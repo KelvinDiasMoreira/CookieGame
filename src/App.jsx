@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import styled from "styled-components";
 import CardBuy from "./components/CardBuy.jsx";
@@ -98,8 +98,8 @@ const ContainerShop = styled.div`
 `;
 
 function App() {
-  const {contCookie, setCookie, contPerSecond, isClicked, setClicked} = CookieProvider()
-  
+  const {contCookie, setCookie, cookiesPerSecond, isClicked, setClicked, state} = CookieProvider()
+
   function handleClick() {
     setCookie(contCookie + 1);
     if (isClicked == true) {
@@ -118,7 +118,7 @@ function App() {
                 ? `${contCookie} cookie`
                 : `${contCookie} cookies`}
             </ContCookies>
-            <PerSecond>Por Segundo: {contPerSecond}</PerSecond>
+            <PerSecond>Por Segundo: {cookiesPerSecond}</PerSecond>
           </div>
           <ModelGame
             draggable="false"
@@ -135,21 +135,21 @@ function App() {
               cookiesValue={contCookie}
               img={cursor}
               name="Cursor"
-              shopvalue="15"
+              shopvalue={state.valueCursor}
               descriptionTolltip="Clicks automatico a cada 10 segundos"
             />
             <CardBuy
               cookiesValue={contCookie}
               img={robot}
               name="Robot"
-              shopvalue="100"
+              shopvalue={state.valueRobot}
               descriptionTolltip="Cada robo produz 1 cookie por segundo"
             />
             <CardBuy
               cookiesValue={contCookie}
               img={muscle}
               name="Muscle"
-              shopvalue="1100"
+              shopvalue={state.valueMuscle}
               descriptionTolltip="Cada musculo produz 8 cookies por segundo"
             />
           </ContainerShop>
